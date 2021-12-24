@@ -27,7 +27,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return render_template('home.html')
+    return render_template('index.html')
 
 
 @app.route('/login', methods=['POST'])
@@ -42,6 +42,18 @@ def login():
         else:
             # return jsonify({'data_user': data})
             return redirect(f'/customer?user={user}&password={password}')
+
+
+@app.route('/insert_customer', methods=['POST'])
+def insert_customer():
+
+    return redirect('/')
+
+
+@app.route('/insert_hospital', methods=['POST'])
+def insert_hospital():
+
+    return redirect('/')
 
 
 @ app.route('/admin')
