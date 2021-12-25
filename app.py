@@ -61,7 +61,7 @@ def admin():
     return render_template('admin.html')
 
 
-@ app.route('/customer')
+@ app.route('/customer', methods=['POST', 'GIT'])
 def customer():
     user = request.args.get('user')
     password = request.args.get('password')

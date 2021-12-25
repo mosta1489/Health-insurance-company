@@ -13,8 +13,6 @@
 	<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 
 
-
-
 </head>
 
 <body>
@@ -59,7 +57,7 @@
 						</form>
 						<br>
 
-						<h3 class="w-100 text-center">&mdash; Or Add A &mdash;</h3>
+						<h3 class="w-100 text-center">&mdash; Or Sign Up As &mdash;</h3>
 
 						<br>
 
@@ -92,54 +90,44 @@
 
 					<form action="/insert_hospital" method="POST">
 						<div class="form-group">
-							<label style="color:black">Full Name</label>
+							<label style="color:black">First Name</label>
 							<input type="text" name="name" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
-							<label style="color:black">Email</label>
+							<label style="color:black">Last Name</label>
 							<input type="text" name="email" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Email" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
-							<label style="color:black">Phone Number</label>
+							<label style="color:black">Username</label>
 							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
-							<label style="color:black">Phone Number</label>
+							<label style="color:black">Password</label>
 							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
 						</div>
-
 						<div class="form-group">
-							<label style="color:black">Phone Number</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
-						</div>
+							<label style="color:black">Type Of Plan</label>
+							<!-- <input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
+								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;"> -->
 
-						<div class="form-group">
-							<label style="color:black">Phone Number</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
-						</div>
+							<select id='select-type' class="form-control"
+								style="background-color:#24424cc4; padding: 10px;">
+								<option>Basic</option>
+								<option>Premium</option>
+								<option>Golden</option>
+							</select>
 
-						<div class="form-group">
-							<label style="color:black">Phone Number</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
-						</div>
-
-						<div class="form-group">
-							<label style="color:black">Phone Number</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<br>
+
 						<!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
 						<div class="form-group">
 							<button type="submit" class="form-control btn btn-primary rounded submit px-3">
@@ -167,29 +155,30 @@
 					<form action="/insert_customer" method="POST">
 
 						<div class="form-group">
-							<label style="color:black">Full Name</label>
-							<input type="text" name="name" class="form-control" id="exampleFormControlInput1"
+							<label style="color:black">Name</label>
+							<input type="text" name="hospital_name" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
-							<label style="color:black">Email</label>
-							<input type="text" name="email" class="form-control" id="exampleFormControlInput1"
+							<label style="color:black">Location</label>
+							<input type="text" name="Location" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Email" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
-							<label style="color:black">Phone Number</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
-						</div>
+							<label style="color:black">Type Of Plan</label>
+							<!-- <input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
+														placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;"> -->
 
-						<div class="form-group">
-							<label style="color:black">Phone Number</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
-						</div>
+							<select id='select-type' class="form-control"
+								style="background-color:#24424cc4; padding: 10px;">
+								<option>Basic</option>
+								<option>Premium</option>
+								<option>Golden</option>
+							</select>
 
+						</div>
 						<br>
 						<!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
 						<div class="form-group">

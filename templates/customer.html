@@ -3,16 +3,137 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>customer</title>
+    <title>Customer</title>
+
+    <link rel="stylesheet" href="../static/css/customer.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
 </head>
 
 <body>
-    <h1>this is Customer page {{user}}</h1>
+    <h1>Hello mr/ {{}}
+    </h1>
     <hr>
-    <h3>userneme is :{{user}}</h3>
-    <h3>password is :{{password}}</h3>
+    <h2>What do you want to do</h2>
+    <!-- Start Nav bar -->
+    <div>
+        <ul class="menu">
+
+            <li><a data-toggle="modal" href="#add_plan" class="px-2 py-2 mr-md-1 rounded"><span
+                        class="ion-logo-facebook mr-2"></span>
+                    Purchase a plan</a></li>
+
+            <li><a style="color: white;" data-toggle="modal" data-target="#add_plan"
+                    class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
+                    Adding a dependent</a></li>
+
+            <li><a style="color: white;" data-toggle="modal" data-target="#add_plan"
+                    class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
+                    View available hospitals</a></li>
+
+            <li><a style="color: white;" data-toggle="modal" data-target="#add_plan"
+                    class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
+                    File an insurance claim</a></li>
+
+
+            <!-- <li><a data-target="#add_plan">Purchase a plan</a> </li> -->
+            <!-- <li><a href="#add_plan"> Adding a dependent </a></li>
+            <li><a href="#add_plan">View available hospitals</a></li>
+            <li><a href="#add_plan">File an insurance claim</a></li> -->
+            <li class="slider"></li>
+        </ul>
+    </div>
+    <!-- End Nav bar -->
+
+
+    <!-- Start Adding Dependent -->
+
+    <!-- End Adding Dependent -->
+
+
+    <!-- --------------------------- -->
+
+    <!-- ---------- Start Add Plan--------------------- -->
+    <div id="Hospital" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" style="align-content: center;">
+                        Add New Hospital</h5>
+                </div>
+                <form action="/insert_customer" method="POST">
+
+                    <div class="modal-body">
+                        <div class="box">
+                            <br>
+                            <label for="select-type" class="label select-box1">
+                                <h5>Choose type of plane :</h5>
+                            </label>
+
+                            <select id='select-type' class="form-control" style=" background-color: #24424cc4; color:white;
+                                padding:5px;margin-bottom: 10px;height: 47px">
+
+                                <option style="color: white;">Basic</option>
+                                <option style="color: white;">Premium</option>
+                                <option style="color: white;">Golden</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br><br>
+
+
+                    <div class="form-group" style='margin-top:40px; '>
+                        <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                            Save</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ---------- End Add Plan--------------------- -->
+
+
+    <!-- =---------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- End of New Hospital Modal -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
 </body>
 
