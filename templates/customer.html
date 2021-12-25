@@ -5,34 +5,36 @@
     <meta charset="UTF-8">
     <title>Customer</title>
 
-    <link rel="stylesheet" href="../static/css/customer.css">
+    <!-- <link rel="stylesheet" href="../static/css/customer.css"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/customer.css')}}">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 </head>
 
 <body>
-    <h1>Hello mr/ {{}}
-    </h1>
+    <hr>
+
+    <h1>Hello mr/ {{user}}</h1>
     <hr>
     <h2>What do you want to do</h2>
-    <!-- Start Nav bar -->
+    <!---------------------- Start Nav bar ----------------->
     <div>
         <ul class="menu">
 
-            <li><a data-toggle="modal" href="#add_plan" class="px-2 py-2 mr-md-1 rounded"><span
-                        class="ion-logo-facebook mr-2"></span>
+            <li><a style=" text-decoration: none;" data-toggle="modal" href="#add_plan"
+                    class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
                     Purchase a plan</a></li>
 
-            <li><a style="color: white;" data-toggle="modal" data-target="#add_plan"
+            <li><a style=" text-decoration: none; color: white;" data-toggle="modal" href="#add_dependent"
                     class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
                     Adding a dependent</a></li>
 
-            <li><a style="color: white;" data-toggle="modal" data-target="#add_plan"
+            <li><a style="text-decoration: none; color: white;" data-toggle="modal" href="#view_hospital"
                     class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
                     View available hospitals</a></li>
 
-            <li><a style="color: white;" data-toggle="modal" data-target="#add_plan"
+            <li><a style="text-decoration: none; color: white;" data-toggle="modal" href="#file_claim"
                     class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
                     File an insurance claim</a></li>
 
@@ -44,18 +46,13 @@
             <li class="slider"></li>
         </ul>
     </div>
-    <!-- End Nav bar -->
+    <!----------------- End Nav bar ----------------->
 
+    <!-- -------------------------------------------------------------- -->
 
-    <!-- Start Adding Dependent -->
+    <!-- ----------------------- Start Add Plan--------------------- -->
 
-    <!-- End Adding Dependent -->
-
-
-    <!-- --------------------------- -->
-
-    <!-- ---------- Start Add Plan--------------------- -->
-    <div id="Hospital" class="modal fade" role="dialog">
+    <div id="add_plan" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -81,8 +78,8 @@
                             </select>
                         </div>
                     </div>
-                    <br><br>
 
+                    <br><br>
 
                     <div class="form-group" style='margin-top:40px; '>
                         <button type="submit" class="form-control btn btn-primary rounded submit px-3">
@@ -93,38 +90,159 @@
             </div>
         </div>
     </div>
-    <!-- ---------- End Add Plan--------------------- -->
+    <!-- --------------------- End Add Plan--------------------- -->
 
 
-    <!-- =---------------------- -->
+    <!-- =---------------------------------------------------------------- -->
+
+    <!---------------------- Start Adding Dependent -------------------------->
+
+    <div id="add_dependent" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" style="align-content: center;">
+                        Add New Hospital</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="/insert_customer" method="POST">
+
+                        <div class="form-group">
+                            <label style="color:black">Name</label>
+                            <input type="text" name="dependent_name" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Enter Full Name">
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color:black">Relationship</label>
+                            <input type="text" name="relationship" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Enter Relationship">
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color:black">Age</label>
+                            <input type="text" name="dependent_age" class="form-control" id="exampleFormControlInput1"
+                                placeholder="Enter Age">
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color:black">The ID of Plan</label>
+
+                            <select id='select-type' class="form-control">
+                                {%for plan in plans%}
+                                <option>{{plan}}</option>
+                                {%endfor%}
+                            </select>
+
+                        </div>
+                        <br>
+                        <!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                                Save</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!----------------------- End Adding Dependent -------------------------->
+
+    <!-------------------------------------------------------------------------->
+
+    <!-------------- Start view avilable hospital ---------->
 
 
+    <div id="view_hospital" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" style="align-content: center;">
+                        Add New Hospital</h5>
+                </div>
+                <!-- <form action="/insert_customer" method="POST"> -->
+
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Type of Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for row in students %}
+                            <tr>
+                                <td>{{row.0}}</td>
+                                <td>{{row.1}}</td>
+                                <td>{{row.2}}</td>
+                                <td>{{row.3}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-------------- End view avilable hospital ---------->
 
 
+    <!------------------------------------------------------------------ -->
 
+    <!--------------------- Start File An insurance Claim -------------------->
 
+    <div id="file_claim" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" style="align-content: center;">
+                        Add New Hospital</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="/insert_customer" method="POST">
 
+                        <div class="form-group">
+                            <label style="color:black">Decription of Claim</label>
+                            <textarea style="height: 100px;" name="discription" class="form-control"
+                                placeholder="Enter discription of claim"></textarea>
+                        </div>
 
+                        <div class="form-group">
+                            <label style="color:black">The ID of Plan</label>
 
+                            <select id='select-type' class="form-control">
+                                {%for plan in plans%}
+                                <option>{{plan}}</option>
+                                {%endfor%}
+                            </select>
 
+                        </div>
+                        <br>
+                        <!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
+                        <div class="form-group">
+                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                                Send</button>
+                        </div>
 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!--------------------- End File An insurance Claim -------------------------->
 
+    <!-- ---------------------------------------------------------------------- -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- End of New Hospital Modal -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

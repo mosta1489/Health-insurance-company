@@ -20,9 +20,16 @@
 	<style>
 		body {
 			background-image: url("{{url_for('static', filename='images/back.jpg')}}");
-			background-size: 100% 104%;
+			background-size: 100% 110%;
 		}
 	</style>
+
+
+	<!--------------------------------------------------->
+	<!--------------------------------------------------->
+	<!---------------- Start Login ---------------------->
+	<!--------------------------------------------------->
+
 
 	<section class="ftco-section">
 		<div class="container">
@@ -77,7 +84,19 @@
 	</section>
 
 
-	<!-- Enter add Customer Modal -->
+	<!--------------------------------------------------->
+	<!---------------- End Login ---------------------->
+	<!--------------------------------------------------->
+	<!--------------------------------------------------->
+
+
+
+
+	<!--------------------------------------------------->
+	<!--------------------------------------------------->
+	<!-- Start add Customer Modal -->
+	<!--------------------------------------------------->
+
 
 	<div id="Customer" class="modal fade" role="dialog">
 		<div class="modal-dialog">
@@ -88,36 +107,35 @@
 				</div>
 				<div class="modal-body">
 
-					<form action="/insert_hospital" method="POST">
+					<form action="/insert_customer" method="POST">
 						<div class="form-group">
-							<label style="color:black">First Name</label>
-							<input type="text" name="name" class="form-control" id="exampleFormControlInput1"
+							<label style="color:black">Name</label>
+							<input type="text" name="customer_name" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
-							<label style="color:black">Last Name</label>
-							<input type="text" name="email" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Email" style="background-color:#24424cc4; padding: 10px;">
-						</div>
-
-						<div class="form-group">
-							<label style="color:black">Username</label>
-							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
+							<label style="color:black">User Name</label>
+							<input name="user_name" type="text" class="form-control" id="exampleFormControlInput1"
+								placeholder="Enter Username" style="background-color:#24424cc4; padding: 10px;">
 						</div>
 
 						<div class="form-group">
 							<label style="color:black">Password</label>
+							<input name="password" type="text" class="form-control" id="exampleFormControlInput1"
+								placeholder="Enter Password" style="background-color:#24424cc4; padding: 10px;">
+						</div>
+
+						<div class="form-group">
+							<label style="color:black">Phone</label>
 							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
 								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
 						</div>
+
 						<div class="form-group">
 							<label style="color:black">Type Of Plan</label>
-							<!-- <input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;"> -->
 
-							<select id='select-type' class="form-control"
+							<select id='select-type' class="form-control" name="plan_type"
 								style="background-color:#24424cc4; padding: 10px;">
 								<option>Basic</option>
 								<option>Premium</option>
@@ -128,7 +146,6 @@
 
 						<br>
 
-						<!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
 						<div class="form-group">
 							<button type="submit" class="form-control btn btn-primary rounded submit px-3">
 								Save</button>
@@ -140,9 +157,19 @@
 		</div>
 	</div>
 
-	<!-- End of New Customer Modal -->
 
-	<!-- Enter add Hospital Modal -->
+	<!--------------------------------------------------->
+	<!-- End of New Customer Modal -->
+	<!--------------------------------------------------->
+	<!--------------------------------------------------->
+
+
+
+	<!--------------------------------------------------->
+	<!--------------------------------------------------->
+	<!-- Start add Hospital Modal -->
+	<!--------------------------------------------------->
+
 
 	<div id="Hospital" class="modal fade" role="dialog">
 		<div class="modal-dialog">
@@ -152,7 +179,7 @@
 						Add New Hospital</h5>
 				</div>
 				<div class="modal-body">
-					<form action="/insert_customer" method="POST">
+					<form action="/insert_hospital" method="POST">
 
 						<div class="form-group">
 							<label style="color:black">Name</label>
@@ -162,25 +189,40 @@
 
 						<div class="form-group">
 							<label style="color:black">Location</label>
-							<input type="text" name="Location" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Email" style="background-color:#24424cc4; padding: 10px;">
+							<input type="text" name="location" class="form-control" id="exampleFormControlInput1"
+								placeholder="Enter Location" style="background-color:#24424cc4; padding: 10px;">
 						</div>
+
+
+						<div class="form-group">
+							<label style="color:black">Phone</label>
+							<input type="text" name="phone" class="form-control" id="exampleFormControlInput1"
+								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
+						</div>
+
 
 						<div class="form-group">
 							<label style="color:black">Type Of Plan</label>
-							<!-- <input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-														placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;"> -->
 
-							<select id='select-type' class="form-control"
-								style="background-color:#24424cc4; padding: 10px;">
-								<option>Basic</option>
-								<option>Premium</option>
-								<option>Golden</option>
-							</select>
+							<!-- <select id='select-type' class="form-control" name="plan_type"
+								style="background-color:#24424cc4; padding: 10px;"> -->
+							<div style="color:black; background-color:#6c7d83c4; padding: 10px;">
+								<input id="type1" type="checkbox" name="plan_type" value="basic" checked />
+								<label for="type1">Basic</label>
+							</div>
+
+							<div style=" color:black;background-color:#a7d1ddc4; padding: 10px;">
+								<input id="type2" type="checkbox" name="plan_type" value="premium" />
+								<label for="type2">Premium</label>
+							</div>
+
+							<div style=" color:black; background-color:#6c7d83c4; padding: 10px;">
+								<input id="type3" type="checkbox" name="plan_type" value="golden" />
+								<label for="type3">Golden</label>
+							</div>
 
 						</div>
-						<br>
-						<!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
+
 						<div class="form-group">
 							<button type="submit" class="form-control btn btn-primary rounded submit px-3">
 								Save</button>
@@ -192,7 +234,10 @@
 		</div>
 	</div>
 
+
+	<!--------------------------------------------------->
 	<!-- End of New Hospital Modal -->
+	<!--------------------------------------------------->
 
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
