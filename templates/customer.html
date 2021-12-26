@@ -18,6 +18,8 @@
     <h1>Hello mr/ {{user}}</h1>
     <hr>
     <h2>What do you want to do</h2>
+
+    <!-------------------------------------------------------------------------->
     <!---------------------- Start Nav bar ----------------->
     <div>
         <ul class="menu">
@@ -47,10 +49,13 @@
         </ul>
     </div>
     <!----------------- End Nav bar ----------------->
+    <!-------------------------------------------------------------------------->
 
+
+
+    <!-------------------------------------------------------------------------->
     <!-- -------------------------------------------------------------- -->
-
-    <!-- ----------------------- Start Add Plan--------------------- -->
+    <!-- ----------------------- Start Purchase Plan--------------------- -->
 
     <div id="add_plan" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -58,9 +63,9 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title text-primary" style="align-content: center;">
-                        Add New Hospital</h5>
+                        Purchase New Plan</h5>
                 </div>
-                <form action="/insert_customer" method="POST">
+                <form action="/customer/purchase_plan" method="POST">
 
                     <div class="modal-body">
                         <div class="box">
@@ -69,8 +74,8 @@
                                 <h5>Choose type of plane :</h5>
                             </label>
 
-                            <select id='select-type' class="form-control" style=" background-color: #24424cc4; color:white;
-                                padding:5px;margin-bottom: 10px;height: 47px">
+                            <select name="plan_type" id='select-type' class="form-control" style=" background-color: #24424cc4; color:white;
+                                padding:5px 0 7px 10px;margin-bottom: 10px;height: 47px">
 
                                 <option style="color: white;">Basic</option>
                                 <option style="color: white;">Premium</option>
@@ -78,60 +83,61 @@
                             </select>
                         </div>
                     </div>
-
+                    <input type="hidden" name="user" value="{{user}}">
                     <br><br>
 
                     <div class="form-group" style='margin-top:40px; '>
                         <button type="submit" class="form-control btn btn-primary rounded submit px-3">
-                            Save</button>
+                            Purchase</button>
                     </div>
 
                 </form>
             </div>
         </div>
     </div>
-    <!-- --------------------- End Add Plan--------------------- -->
-
-
+    <!-- --------------------- End Purchase Plan--------------------- -->
+    <!-------------------------------------------------------------------------->
     <!-- =---------------------------------------------------------------- -->
 
+
+
+    <!-------------------------------------------------------------------------->
     <!---------------------- Start Adding Dependent -------------------------->
+    <!-------------------------------------------------------------------------->
 
     <div id="add_dependent" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-primary" style="align-content: center;">
-                        Add New Hospital</h5>
+                        Add New Dependent</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="/insert_customer" method="POST">
+                    <form action="/customer/add_dependent" method="POST">
 
                         <div class="form-group">
                             <label style="color:black">Name</label>
                             <input type="text" name="dependent_name" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Enter Full Name">
+                                placeholder="Enter Full Name" required>
                         </div>
 
                         <div class="form-group">
                             <label style="color:black">Relationship</label>
                             <input type="text" name="relationship" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Enter Relationship">
+                                placeholder="Enter Relationship" required>
                         </div>
 
                         <div class="form-group">
-                            <label style="color:black">Age</label>
-                            <input type="text" name="dependent_age" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Enter Age">
-                        </div>
+                            <label style="color:black">The ID of Plan that a dependent will benefits from it</label>
 
-                        <div class="form-group">
-                            <label style="color:black">The ID of Plan</label>
+                            <select name="plan_id" id='select-type' class="form-control" required>
 
-                            <select id='select-type' class="form-control">
-                                {%for plan in plans%}
+                                {%for plan in plans_list%}
+
                                 <option>{{plan}}</option>
+
                                 {%endfor%}
+
                             </select>
 
                         </div>
@@ -148,12 +154,15 @@
         </div>
     </div>
 
+    <!-------------------------------------------------------------------------->
     <!----------------------- End Adding Dependent -------------------------->
-
     <!-------------------------------------------------------------------------->
 
-    <!-------------- Start view avilable hospital ---------->
 
+
+    <!-------------------------------------------------------------------------->
+    <!-------------- Start view available hospital ---------->
+    <!-------------------------------------------------------------------------->
 
     <div id="view_hospital" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -161,9 +170,8 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title text-primary" style="align-content: center;">
-                        Add New Hospital</h5>
+                        Available Hospitals </h5>
                 </div>
-                <!-- <form action="/insert_customer" method="POST"> -->
 
                 <div class="modal-body">
                     <table class="table table-hover">
@@ -177,7 +185,7 @@
                         </thead>
                         <tbody>
 
-                            {% for row in students %}
+                            {% for row in available_hospital %}
                             <tr>
                                 <td>{{row.0}}</td>
                                 <td>{{row.1}}</td>
@@ -193,12 +201,15 @@
         </div>
     </div>
 
+    <!-------------------------------------------------------------------------->
     <!-------------- End view avilable hospital ---------->
+    <!-------------------------------------------------------------------------->
+
 
 
     <!------------------------------------------------------------------ -->
-
     <!--------------------- Start File An insurance Claim -------------------->
+    <!-------------------------------------------------------------------------->
 
     <div id="file_claim" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -208,19 +219,19 @@
                         Add New Hospital</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="/insert_customer" method="POST">
+                    <form action="/customer/file_claim" method="POST">
 
                         <div class="form-group">
-                            <label style="color:black">Decription of Claim</label>
-                            <textarea style="height: 100px;" name="discription" class="form-control"
-                                placeholder="Enter discription of claim"></textarea>
+                            <label style="color:black">Description of Claim</label>
+                            <textarea style="height: 100px;" name="description" class="form-control"
+                                placeholder="Enter description of claim" required></textarea>
                         </div>
 
                         <div class="form-group">
                             <label style="color:black">The ID of Plan</label>
 
-                            <select id='select-type' class="form-control">
-                                {%for plan in plans%}
+                            <select name='plan_id' id='select-type' class="form-control" required>
+                                {%for plan in plans_list%}
                                 <option>{{plan}}</option>
                                 {%endfor%}
                             </select>
@@ -239,9 +250,10 @@
         </div>
     </div>
 
+    <!-------------------------------------------------------------------------->
     <!--------------------- End File An insurance Claim -------------------------->
-
     <!-- ---------------------------------------------------------------------- -->
+
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
