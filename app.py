@@ -8,7 +8,7 @@ from mysql.connector import connect
 
 global db
 db = connect(host='localhost',
-             database='project_1',
+             database='Insurance Company',
              user='root',
              password='mosta')
 
@@ -45,8 +45,7 @@ def login():
         password = request.form.get('password')
 
         if (user, password) == ('admin', 'admin'):
-            return redirect(url_for('admin'))
-
+            return redirect('/admin')
 
         else:
             # cr = db.cursor()
@@ -165,7 +164,7 @@ def insert_hospital():
 
         '''
 
-        return render_template('admin.html', plan_type=plan_type_list)
+        # return render_template('admin.html', plan_type=plan_type_list)
 
     return redirect('/')
 
@@ -175,7 +174,7 @@ def insert_hospital():
 
 
 # ---------------------------------------------------------------------------------------
-# ---------------- Admin Page -----------------------------------------------------------
+# ------------------------------ Admin Page ---------------------------------------------
 
 @app.route('/admin')
 def admin():
@@ -186,11 +185,11 @@ def admin():
 # ---------------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------------
-# --------------------- Customer Page ---------------------------------------------------
+# -------------------------- Customer Page ----------------------------------------------
 
 @app.route('/customer', methods=["GET"])
 def customer():
-    user = request.form.get('user')
+    user = request.args.get('user')
 
     '''
     cr = db.cursor()
@@ -202,10 +201,11 @@ def customer():
     cr.execute(f"")
     
     available_hospital_list = cr.fetchall()
-    
+
     '''
 
-    return render_template('customer.html', user=user)  # , plans_list=plans, available_hospital= available_hospital_list)
+    return render_template('customer.html',
+                           user=user)  # , plans_list=plans, available_hospital= available_hospital_list)
 
 
 # ---------------------------------------------------------------------------------------
@@ -262,11 +262,9 @@ def add_dependent():
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
 
-app.route('/customer/file_claim', methods=["POST"])
+@app.route('/customer/file_claim', methods=["POST"])
 def file_claim():
-
     if request.method == "POST":
-
         description = request.form.get('description')
         plan_id = request.form.get('plan_id')
         solved = 'False'
@@ -279,7 +277,6 @@ def file_claim():
 
         cr.close()
         '''
-
     return redirect('/customer')
 
 
@@ -287,11 +284,8 @@ def file_claim():
 # ---------------------------------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------------
-
-
 
 
 if __name__ == '__main__':
