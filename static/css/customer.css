@@ -33,6 +33,13 @@ h2{
   /* padding-bottom: 0px; */
   /* margin-bottom: 0px; */
 }
+.message{
+    padding-top:80px;
+    padding-left:80px;
+    text-align: center;
+    width:1500px
+}
+
 /* .nav-bar{
   top: 80%;
 } */

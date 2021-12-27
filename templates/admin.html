@@ -38,17 +38,13 @@
                             <td>{{customer.1}}</td>
                             <td>{{customer.2}}</td>
                             <td>
-                                <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#all_claims">All
+                                <a href="/admin/show_all_claims/{{ customer.0 }}" class="btn btn-warning btn-sm">All
                                     Claims</a>
-                                <a class="btn btn-warning btn-sm" data-toggle="modal"
-                                    data-target="#unresolver">Unresolved </a>
+                                <a href="/admin/show_unresolved_claims/{{ customer.0 }}" class="btn btn-warning btn-sm">
+                                    Unresolved Claims</a>
+
                             </td>
                         </tr>
-
-
-
-
-
 
                         {% endfor %}
                     </tbody>
@@ -57,116 +53,11 @@
             </div>
             <!--------------- End show Customer list --------------->
 
-
-        </div>
-    </div>
-
-    <!-- ------------------------------------------------ -->
-    <!------------------ view climes ----------------------->
-    <!-- ------------------------------------------------ -->
-    <!-- ------------------------------------------------ -->
-    <!------------------- Enter View ALL Climes ------------>
-    <!-- ------------------------------------------------ -->
-
-    <div id="all_claims" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 500px;">
-
-                <div class="modal-header">
-                    <h5 class="modal-title text-primary" style="align-content: center;">Please Add
-                        New
-                        Student</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Plan ID</th>
-                                    <th scope="col">Solving</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for plan in plan_list %}
-                                <tr>
-                                    <td>{{plan.0}}</td>
-                                    <td>{{plan.1}}</td>
-                                    <td>
-                                        <a href="/delete/{{ row.0 }}" onclick="return confirm('{{Description}}')"
-                                            class="btn btn-danger btn-sm">View Description</a>
-                                    </td>
-                                </tr>
-                                {%endfor%}
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
 
-    <!-- ------------------------------------------------ -->
-    <!-- ------------------------------------------------ -->
-
-    <div id="unresolver" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content" style="width: 500px;">
-
-                <div class="modal-header">
-                    <h5 class="modal-title text-primary" style="align-content: center;">Please Add
-                        New
-                        Student</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Plan ID</th>
-                                    <th scope="col">Solving</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for plan in plan_list %}
-                                <tr>
-                                    <td>{{plan.0}}</td>
-                                    <td>{{plan.1}}</td>
-                                    <td>
-                                        <a href="" class="btn btn-warning btn-sm" data-toggle="modal"
-                                            data-target="#modaledit">Make As resolver </a>
-                                    </td>
-                                </tr>
-                                {%endfor%}
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
-    <!-- ------------------------------------------------ -->
+    <!---------------------------------------------------->
     <!-- ------------------------------------------------ -->
     <script>
         function myFunction(the_id) {
@@ -180,14 +71,6 @@
     </script>
     <!-- ------------------------------------------------ -->
     <!-- ------------------------------------------------ -->
-
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script> -->
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

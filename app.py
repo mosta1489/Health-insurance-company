@@ -3,7 +3,7 @@ from flask import (
     render_template,
     redirect,
     url_for,
-    request, )
+    request, flash)
 from mysql.connector import connect
 
 global db
@@ -21,7 +21,7 @@ def select(quary):
 
 
 app = Flask(__name__)
-
+app.secret_key = "super secret key"
 
 # ---------------------------------------------------------------------------------------
 # --------------------------- Main Page -------------------------------------------------
@@ -114,6 +114,7 @@ def insert_customer():
         cr.close()
         
         '''
+        flash('adding new customer successfully')
     return redirect('/')
 
 
@@ -164,6 +165,8 @@ def insert_hospital():
 
         '''
 
+        flash('adding new Hospital successfully')
+
         # return render_template('admin.html', plan_type=plan_type_list)
 
     return redirect('/')
@@ -178,7 +181,61 @@ def insert_hospital():
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    customers_list = [('mosta1489', 'mostafa ahmed', '01283140898'),
+                      ('mosta1489', 'mostafa ahmed', '01283140898'),
+                      ('mosta1489', 'mostafa ahmed', '01283140898'),
+                      ('mosta1489', 'mostafa ahmed', '01283140898')]
+
+
+    return render_template('admin.html', customers_list=customers_list)
+
+
+# ---------------------------------------------------------------------------------------
+# -----------------------  show_all_claims ----------------------------------------------
+
+@app.route('/admin/show_all_claims/<string:user>', methods=['POST', 'GET'])
+def show_all_claims(user):
+    claims_list = [('1255', 'unresolved', 'this is description of claimthis is description of claimthis is description of claimthis is description of claimthis is description of claim'),
+                   ('858', 'resolved', 'this is description of claimthis is description of claimthis is description of claim'),
+                   ('fdgf', 'resolved', 'this is description of claim'),
+                   ('858', 'taer', 'this is description of claim')]
+
+    return render_template('claims.html', claims_list=claims_list, user=user)
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------------------------------------------
+# -----------------------  show_unresolved_claims ----------------------------------------------
+
+@app.route('/admin/show_unresolved_claims/<string:user>', methods=['POST', 'GET'])
+def show_unresolved_claims(user):
+    claims_list = [('1255', 'resolved', 'this is description of claimthis is description of claimthis is description of claimthis is description of claimthis is description of claim'),
+                   ('858', 'resolved', 'this is description of claimthis is description of claimthis is description of claim'),
+                   ('fdgf', 'resolved', 'this is description of claim'),
+                   ('858', 'taer', 'this is description of claim')]
+
+    return render_template('claims.html', claims_list=claims_list, user=user)
+
+
+# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------------
+# -----------------------  make_claim_resolved ----------------------------------------------
+
+@app.route('/make_claim_resolved/<string:user>/<string:claim_id>', methods=['POST', 'GET'])
+def make_claim_resolved(user, claim_id):
+    flash("Status of Claims Has Been Edited Successfully")
+
+    claims_list = [('1255', 'resolved', 'this is description of claimthis is description of claimthis is description of claimthis is description of claimthis is description of claim'),
+                   ('858', 'resolved', 'this is description of claimthis is description of claimthis is description of claim'),
+                   ('fdgf', 'resolved', 'this is description of claim'),
+                   ('858', 'taer', 'this is description of claim')]
+
+    return redirect(f"/admin/show_all_claims/{user}")
 
 
 # ---------------------------------------------------------------------------------------
@@ -228,7 +285,7 @@ def customer_purchase_plan():
         cr.commit()
         cr.close()
         '''
-
+    flash('Successfully purchased a new plan')
     return redirect('/customer')
 
 
