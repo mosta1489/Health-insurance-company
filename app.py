@@ -3,25 +3,20 @@ from flask import (
     render_template,
     redirect,
     url_for,
-    request, flash)
+    request,
+    flash)
+
 from mysql.connector import connect
 
 global db
 db = connect(host='localhost',
-             database='Insurance Company',
+             database='insurance company',
              user='root',
              password='mosta')
 
-
-def select(quary):
-    cr = db.cursor()
-    cr.execute(quary)
-    data = cr.fetchall()
-    return data
-
-
 app = Flask(__name__)
 app.secret_key = "super secret key"
+
 
 # ---------------------------------------------------------------------------------------
 # --------------------------- Main Page -------------------------------------------------
@@ -36,7 +31,7 @@ def main():
 
 
 # ---------------------------------------------------------------------------------------
-# ---------------------------- login part -----------------------------------------------
+# ---------------------------- login part ----------------------------------------------->>>>>>> DONE <<<<<<<----------
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -48,82 +43,77 @@ def login():
             return redirect('/admin')
 
         else:
-            # cr = db.cursor()
-            # cr.execute(f'SELECT password FROM customers WHERE user_name="{user}";')
-            # test_pass = cr.fetchall()
 
-            '''
-            test_pass = select(
-                f'SELECT password FROM customers WHERE user_name="{user}";')
-            if password == test_pass:
+            cr = db.cursor()
+            cr.execute(f'SELECT password FROM customer WHERE user_name="{user}";')
+
+            test_pass = cr.fetchone()
+
+            if password == test_pass[0]:
                 return redirect(f'/customer?user={user}')
-            '''
 
-            return redirect(f'/customer?user={user}')
+            else:
+                flash('Incorrect username or password.. Try again', 'error')
 
             # return render_template('customer.html', user_name=user)
 
     return redirect('/')
 
 
-# ---------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
 # ---------------------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------------------
-# -------------------------- Add New Customer -------------------------------------------
+# -------------------------- Add New Customer ------------------------------------------->>>>>>> DONE <<<<<<<----------
 
 @app.route('/insert_customer', methods=['POST'])
 def insert_customer():
     if request.method == 'POST':
-        user_name = request.form.get('user_name')
         customer_name = request.form.get('customer_name')
-        phone = request.form.get('phone')
+        user_name = request.form.get('user_name')
         password = request.form.get('password')
-        # plan_type = request.form.get('plan_type')
-        plan_type = 'Basic'
+        phone = request.form.get('phone')
+        plan_type = request.form.get('plan_type')
 
-        '''
-        
         cr = db.cursor()
 
         # check if new user_name is already exist or not
         cr.execute(f'SELECT user_name FROM customer WHERE user_name="{user_name}";')
         users = cr.fetchall()
+
         if users:  # if returned list has values that mean user already exist
+            flash('This user name already exist', 'error')
             return redirect('/')
 
         # Insert Into customer table
-        cr.execute(f"INSERT INTO customers(user_name,name ,phone, password)"
+        cr.execute(f"INSERT INTO customer(user_name,name ,phone, password)"
                    f" VALUES('{user_name}', '{customer_name}', '{phone}', '{password}' );")
-        cr.commit()
-        
+
         # Insert Into Plan Table
-        cr.execute(f"INSERT INTO Plan(type, owner) VALUES('{plan_type}', '{user_name}');")
-        cr.commit()
+        cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user_name}');")
 
         # get id of this new plan
-        cr.execute(f"SELECT plan_id FROM plan WHERE owner='{user_name}'")
-        plan_id = cr.fetchone()
+        cr.execute(f"SELECT plan_ID FROM plans WHERE owner='{user_name}'")
+        plan_id = cr.fetchone()[0]
 
         # Insert Into Dependent Table
-        cr.execute(f"INSERT INTO Plan(name, plan, relation) VALUES('{user_name}', '{plan_id}', {'owner'} );")
-        cr.commit()
-        
+        cr.execute(f"INSERT INTO dependents (name, relationship, plan) VALUES('{user_name}', 'owner', '{plan_id}');")
 
+        db.commit()
         cr.close()
-        
-        '''
-        flash('adding new customer successfully')
-    return redirect('/')
+
+        flash('A new customer has been added successfully', 'success')
+
+        return redirect('/')
+
+
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
+# ---------------------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------------------------
-# -------------------------- Add New Hospital -------------------------------------------
+# -------------------------- Add New Hospital ------------------------------------------->>>>>>> DONE <<<<<<<----------
 
 @app.route('/insert_hospital', methods=['POST', 'GET'])
 def insert_hospital():
@@ -133,215 +123,241 @@ def insert_hospital():
         phone = request.form.get('phone')
         plan_type_list = request.form.getlist('plan_type')
 
-        '''
-        
         cr = db.cursor()
 
         # check if new hospital is already exist or not
         cr.execute(f'SELECT name FROM hospital WHERE name="{hospital_name}";')
         users = cr.fetchall()
-        if users:  # if returned list has values that mean user already exist
+
+        if users:  # if returned list has values that mean hospital already exist
+            flash('This Hospital already exist', 'error')
             return redirect('/')
 
         # insert hospital data in hospital table
         cr.execute(f"INSERT INTO hospital (name, location, phone)"
                    f" values('{hospital_name}', '{location}', '{phone}');")
-        
-        cr.commit()
-        
-        # get hospital_id of new hospital
-        cr.execute(f"SELECT id FROM hospital WHERE name='{hospital_name}';")
-        hospital_id = cr.fetchone()
 
         # insert data to cover table
         for type in plan_type_list:
-            cr.execute(f"INSERT INTO cover (hospital, plan)"
-                       f" values('{hospital_id}', '{type}');")
-        
-        cr.commit()
-        
-        
+            cr.execute(f"INSERT INTO covers (hospital, plan_type)"
+                       f" values('{hospital_name}', '{type}');")
+
+        db.commit()
         cr.close()
 
-        '''
-
-        flash('adding new Hospital successfully')
+        flash('A new hospital has been added successfully', 'success')
 
         # return render_template('admin.html', plan_type=plan_type_list)
 
-    return redirect('/')
+        return redirect('/')
 
 
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
 # ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------>>>>>>> DONE <<<<<<<-------------
 # ------------------------------ Admin Page ---------------------------------------------
 
 @app.route('/admin')
 def admin():
-    customers_list = [('mosta1489', 'mostafa ahmed', '01283140898'),
-                      ('mosta1489', 'mostafa ahmed', '01283140898'),
-                      ('mosta1489', 'mostafa ahmed', '01283140898'),
-                      ('mosta1489', 'mostafa ahmed', '01283140898')]
-
+    cr = db.cursor()
+    cr.execute("SELECT user_name, name, phone FROM customer;")
+    customers_list = cr.fetchall()
 
     return render_template('admin.html', customers_list=customers_list)
 
 
-# ---------------------------------------------------------------------------------------
-# -----------------------  show_all_claims ----------------------------------------------
-
-@app.route('/admin/show_all_claims/<string:user>', methods=['POST', 'GET'])
-def show_all_claims(user):
-    claims_list = [('1255', 'unresolved', 'this is description of claimthis is description of claimthis is description of claimthis is description of claimthis is description of claim'),
-                   ('858', 'resolved', 'this is description of claimthis is description of claimthis is description of claim'),
-                   ('fdgf', 'resolved', 'this is description of claim'),
-                   ('858', 'taer', 'this is description of claim')]
-
-    return render_template('claims.html', claims_list=claims_list, user=user)
+# -------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<-----------------
+# ----------------------------------------------------------------------------------------
 
 
-# ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<---------------
+# ----------------------- show_all_claims -------------------------------------------------
 
+@app.route('/admin/show_all_claims', methods=['GET'])
+def show_all_claims():
+    user = request.args.get('user')
 
-# ----------------------------------------------------------------------------------------------
-# -----------------------  show_unresolved_claims ----------------------------------------------
+    cr = db.cursor()
 
-@app.route('/admin/show_unresolved_claims/<string:user>', methods=['POST', 'GET'])
-def show_unresolved_claims(user):
-    claims_list = [('1255', 'resolved', 'this is description of claimthis is description of claimthis is description of claimthis is description of claimthis is description of claim'),
-                   ('858', 'resolved', 'this is description of claimthis is description of claimthis is description of claim'),
-                   ('fdgf', 'resolved', 'this is description of claim'),
-                   ('858', 'taer', 'this is description of claim')]
+    cr.execute("SELECT claim_ID, state, CONVERT(cost, CHAR) , description, data FROM claims WHERE plan "
+               f"IN (SELECT plan_ID FROM plans WHERE owner='{user}');")
+
+    claims_list = cr.fetchall()
+
+    cr.close()
 
     return render_template('claims.html', claims_list=claims_list, user=user)
 
 
+# ------------------------------------------------------------------  >>>>>>> DONE <<<<<<<-----------------------------
+# ---------------------------------------------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------ >>>>>>> DONE <<<<<<<------------------------------------
+# ---------------------- show_unresolved_claims -----------------------------------------------------------------------
+
+@app.route('/admin/show_unresolved_claims', methods=['GET'])
+def show_unresolved_claims():
+    user = request.args.get('user')
+
+    cr = db.cursor()
+
+    cr.execute("SELECT claim_ID, state, CONVERT(cost, CHAR) , description, data FROM claims WHERE plan "
+               f"IN (SELECT plan_ID FROM plans WHERE owner='{user}') and state='unresolved' ;")
+
+    claims_list = cr.fetchall()
+
+    cr.close()
+
+    return render_template('claims.html', claims_list=claims_list, user=user)
+
+
+# ------------------------------------------------------------ >>>>>>> DONE <<<<<<<---------------------------------
+# -------------------------------------------------------------------------------------------------------------------
+
+
+# ----------------------------------------------------------- >>>>>>> DONE <<<<<<<---------------------------------
+# -----------------------  make_claim_resolved ---------------------------------------------------------------------
+
+@app.route('/make_claim_resolved', methods=['GET'])
+def make_claim_resolved():
+    user = request.args.get('user')
+    claim_id = request.args.get('claim_id')
+
+    cr = db.cursor()
+
+    cr.execute(f"UPDATE claims SET state='resolved' WHERE claim_ID='{claim_id}';")
+
+    db.commit()
+    cr.close()
+
+
+    flash("Status of Claims Has Been Edited Successfully", 'success')
+    return redirect(f"/admin/show_all_claims?user={user}")
+
+
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
+# --------------------------------------------------------------------------------------------------------------------
+
+
 # ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
-
-# -------------------------------------------------------------------------------------------
-# -----------------------  make_claim_resolved ----------------------------------------------
-
-@app.route('/make_claim_resolved/<string:user>/<string:claim_id>', methods=['POST', 'GET'])
-def make_claim_resolved(user, claim_id):
-    flash("Status of Claims Has Been Edited Successfully")
-
-    claims_list = [('1255', 'resolved', 'this is description of claimthis is description of claimthis is description of claimthis is description of claimthis is description of claim'),
-                   ('858', 'resolved', 'this is description of claimthis is description of claimthis is description of claim'),
-                   ('fdgf', 'resolved', 'this is description of claim'),
-                   ('858', 'taer', 'this is description of claim')]
-
-    return redirect(f"/admin/show_all_claims/{user}")
-
-
-# ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------------------
-# -------------------------- Customer Page ----------------------------------------------
+# -------------------------- Customer Page ---------------------------------------------->>>>>>> DONE <<<<<<<----------
 
 @app.route('/customer', methods=["GET"])
 def customer():
     user = request.args.get('user')
 
-    '''
     cr = db.cursor()
-    cr.execute(f"SELECT plan_id FORM plan WHERE owner='{user}'")
-    plans_list = cr.fetchall()
-    plans = [plan[0] for plan in plans_list]
+    # Get all plans purchased by this customer
+    cr.execute(f"SELECT plan_ID FROM plans WHERE owner='{user}';")
+    plans_list_tuple = cr.fetchall()
+    plans_list = [plan[0] for plan in plans_list_tuple]
 
+    # Get all Hospital Available to this customer
+    cr.execute(f"SELECT * FROM hospital WHERE name"
+               f" IN (SELECT hospital FROM covers WHERE plan_type "
+               f" IN (SELECT DISTINCT type FROM plans WHERE owner='{user}'));")
 
-    cr.execute(f"")
-    
     available_hospital_list = cr.fetchall()
 
-    '''
+    # user = 'mosta148'
+    # get name of this customer to print in page
+    cr.execute(f"SELECT name FROM customer WHERE user_name='{user}';")
+    customer_tuple = cr.fetchall()
+    customer_name = customer_tuple[0][0]
+
+    cr.close()
 
     return render_template('customer.html',
-                           user=user)  # , plans_list=plans, available_hospital= available_hospital_list)
+                           customer_name=customer_name, user=user, plans_list=plans_list,
+                           available_hospital=available_hospital_list)
+
+
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
+# ---------------------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------------------------
-# ------------- Purchase Plan in Customer Page ------------------------------------------
+# ------------- Purchase Plan in Customer Page ------------------------------------------>>>>>>> DONE <<<<<<<----------
 
 @app.route('/customer/purchase_plan', methods=["POST"])
 def customer_purchase_plan():
     if request.method == "POST":
         plan_type = request.form.get('plan_type')
-        user = request.form.get('user')
 
-        '''
+        user = request.form.get('user')  # this is a hidden input sent with plan type input
+
         cr = db.cursor()
-        cr.execute(f"INSERT INTO plan (type, owner) VALUES('{plan_type}', '{user}')")
-        
-        cr.commit()
+
+        # Insert Into Plan Table
+        cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user}');")
+        # cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user}');")
+
+        db.commit()
         cr.close()
-        '''
-    flash('Successfully purchased a new plan')
-    return redirect('/customer')
+
+        flash('Successfully purchased a new plan', 'success')
+        return redirect(f"/customer?user={user}")
+
+
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
+# ---------------------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------------------------
-# ------------- Add Dependent in Customer Page ------------------------------------------
-
+# ------------- Add Dependent in Customer Page ------------------------------------------>>>>>>> DONE <<<<<<<----------
 
 @app.route('/customer/add_dependent', methods=["POST"])
 def add_dependent():
     if request.method == "POST":
         dependent_name = request.form.get('dependent_name')
-        plan_id = request.form.get('plan_id')
         relationship = request.form.get('relationship')
+        plan_id = request.form.get('plan_id')
 
-        '''
+        user = request.form.get('user')  # this is a hidden input sent with plan type input
+
         cr = db.cursor()
         cr.execute(
-            f"INSERT INTO dependent (name, plan, relationship) VALUES('{dependent_name}', '{plan_id}', '{relationship}')")
-            
-            cr.commit()
-            cr.close()
-        '''
+            f"INSERT INTO dependents (name, relationship, plan)"
+            f" VALUES('{dependent_name}', '{relationship}', '{plan_id}');")
 
-    return redirect('/customer')
+        db.commit()
+        cr.close()
+
+        flash('A new dependent has been added successfully', 'success')
+        return redirect(f'/customer?user={user}')
+
+
+# --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
+# ---------------------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
+# --------------------- File New Claim -------------------------------------------------- >>>>>>> DONE <<<<<<<----------
 
 @app.route('/customer/file_claim', methods=["POST"])
 def file_claim():
     if request.method == "POST":
         description = request.form.get('description')
         plan_id = request.form.get('plan_id')
-        solved = 'False'
+        cost = request.form.get('cost')
+        state = 'unresolved'
+        user = request.form.get('user')  # this is a hidden input sent with plan type input
 
-        '''
         cr = db.cursor()
-        cr.execute(f"INSERT INTO claim (plan, solved, description) VALUES ('{description}', '{plan_id}', '{solved}')")
+        cr.execute(f"INSERT INTO claims (plan, state, description, cost)"
+                   f" VALUES ('{plan_id}', '{state}', '{description}', '{cost}')")
 
-        cr.commit()
-
+        db.commit()
         cr.close()
-        '''
-    return redirect('/customer')
+
+        flash('A new Claim has been added successfully', 'success')
+        return redirect(f'/customer?user={user}')
 
 
-# ---------------------------------------------------------------------------------------
-# ---------------------------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------- >>>>>>> DONE <<<<<<<---------
 # ---------------------------------------------------------------------------------------
 
 

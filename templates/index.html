@@ -17,6 +17,8 @@
 
 <body>
 
+	<!-- ------------------------------------------------>
+
 	<style>
 		body {
 			background-image: url("{{url_for('static', filename='images/back.jpg')}}");
@@ -33,6 +35,8 @@
 		}
 	</style>
 
+	<!-- ------------------------------------------------>
+	<!-- ------------------------------------------------>
 
 
 	<!-- ------------------------------------------------>
@@ -42,15 +46,30 @@
 
 	<div class='message'>
 		<h5>
-			{%with messages = get_flashed_messages()%}
+			{%with messages = get_flashed_messages(with_categories=true)%}
 			{%if messages%}
-			{% for message in messages %}
+			{% for category, message in messages %}
+			{%if category == 'success'%}
+
 			<div class="alert alert-success alert-dismissable" role="alert">
 				<button type="button" class="close" data-dismiss="alert" aria-label="close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 				{{message}}
 			</div>
+
+			{%endif%}
+
+			{%if category == 'error'%}
+			<div class="alert alert-danger alert-dismissable" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				{{message}}
+			</div>
+
+			{%endif%}
+
 			{%endfor%}
 			{%endif%}
 			{%endwith%}
@@ -147,25 +166,29 @@
 						<div class="form-group">
 							<label style="color:black">Name</label>
 							<input type="text" name="customer_name" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;">
+								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;"
+								required>
 						</div>
 
 						<div class="form-group">
 							<label style="color:black">User Name</label>
 							<input name="user_name" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Username" style="background-color:#24424cc4; padding: 10px;">
+								placeholder="Enter Username" style="background-color:#24424cc4; padding: 10px;"
+								required>
 						</div>
 
 						<div class="form-group">
 							<label style="color:black">Password</label>
-							<input name="password" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Password" style="background-color:#24424cc4; padding: 10px;">
+							<input name="password" type="password" class="form-control" id="exampleFormControlInput1"
+								placeholder="Enter Password" style="background-color:#24424cc4; padding: 10px;" required
+								max="6">
 						</div>
 
 						<div class="form-group">
 							<label style="color:black">Phone</label>
 							<input name="phone" type="text" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
+								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;"
+								required>
 						</div>
 
 						<div class="form-group">
@@ -220,28 +243,29 @@
 						<div class="form-group">
 							<label style="color:black">Name</label>
 							<input type="text" name="hospital_name" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;">
+								placeholder="Enter Full Name" style="background-color:#24424cc4; padding: 10px;"
+								required>
 						</div>
 
 						<div class="form-group">
 							<label style="color:black">Location</label>
 							<input type="text" name="location" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Location" style="background-color:#24424cc4; padding: 10px;">
+								placeholder="Enter Location" style="background-color:#24424cc4; padding: 10px;"
+								required>
 						</div>
 
 
 						<div class="form-group">
 							<label style="color:black">Phone</label>
 							<input type="text" name="phone" class="form-control" id="exampleFormControlInput1"
-								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;">
+								placeholder="Enter Phone Number" style="background-color:#24424cc4; padding: 10px;"
+								required>
 						</div>
 
 
 						<div class="form-group">
 							<label style="color:black">Type Of Plan</label>
 
-							<!-- <select id='select-type' class="form-control" name="plan_type"
-								style="background-color:#24424cc4; padding: 10px;"> -->
 							<div style="color:black; background-color:#6c7d83c4; padding: 10px;">
 								<input id="type1" type="checkbox" name="plan_type" value="basic" checked />
 								<label for="type1">Basic</label>

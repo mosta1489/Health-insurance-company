@@ -17,8 +17,11 @@
         <h1 class="text-center alert alert-danger">This Is Admin Page</h1>
         <div class="row">
             <div class="col-sm-2"></div>
+            <!------------------------------------------------------>
+            <!------------------------------------------------------>
+            <!--------------- Start show Customer list ------------->
+            <!------------------------------------------------------>
 
-            <!--------------- Start show Customer list --------------->
             <div class="col-sm-8">
                 <h2>Customer List</h2>
 
@@ -38,9 +41,11 @@
                             <td>{{customer.1}}</td>
                             <td>{{customer.2}}</td>
                             <td>
-                                <a href="/admin/show_all_claims/{{ customer.0 }}" class="btn btn-warning btn-sm">All
+                                <a href="/admin/show_all_claims?user={{ customer.0 }}"
+                                    class="btn btn-warning btn-sm">All
                                     Claims</a>
-                                <a href="/admin/show_unresolved_claims/{{ customer.0 }}" class="btn btn-warning btn-sm">
+                                <a href="/admin/show_unresolved_claims?user={{ customer.0 }}"
+                                    class="btn btn-warning btn-sm">
                                     Unresolved Claims</a>
 
                             </td>
@@ -51,27 +56,19 @@
 
                 </table>
             </div>
+
+            <!------------------------------------------------------>
             <!--------------- End show Customer list --------------->
+            <!------------------------------------------------------>
+            <!------------------------------------------------------>
+
 
         </div>
     </div>
 
 
-    <!---------------------------------------------------->
-    <!-- ------------------------------------------------ -->
-    <script>
-        function myFunction(the_id) {
-            var x = document.getElementById(the_id);
-            if (x.style.display === 'none') {
-                x.style.display = 'block';
-            } else {
-                x.style.display = 'none';
-            }
-        }
-    </script>
-    <!-- ------------------------------------------------ -->
-    <!-- ------------------------------------------------ -->
-
+    <!-- --------------------------------------------------->
+    <!-- --------------------------------------------------->
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

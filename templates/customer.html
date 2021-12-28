@@ -15,7 +15,7 @@
 <body>
     <hr>
 
-    <h1>Hello mr/ {{user}}</h1>
+    <h1>Hello mr/ {{customer_name}}</h1>
     <hr>
     <h2>What do you want to do</h2>
 
@@ -123,9 +123,14 @@
 
                         <div class="form-group">
                             <label style="color:black">Relationship</label>
-                            <input type="text" name="relationship" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Enter Relationship" required>
+
+                            <select name="relationship" id='select-type' class="form-control" required>
+                                <option>Son</option>
+                                <option>Daughter</option>
+                                <option>Partner</option>
+                            </select>
                         </div>
+
 
                         <div class="form-group">
                             <label style="color:black">The ID of Plan that a dependent will benefits from it</label>
@@ -139,10 +144,10 @@
                                 {%endfor%}
 
                             </select>
+                            <input type="hidden" name="user" value="{{user}}">
 
                         </div>
                         <br>
-                        <!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
                         <div class="form-group">
                             <button type="submit" class="form-control btn btn-primary rounded submit px-3">
                                 Save</button>
@@ -178,23 +183,20 @@
                         <thead>
                             <tr>
                                 <th scope="col">Name</th>
-                                <th scope="col">Location</th>
                                 <th scope="col">Phone</th>
-                                <th scope="col">Type of Plan</th>
+                                <th scope="col">Location</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            {% for row in available_hospital %}
+                            {% for hospital in available_hospital %}
                             <tr>
-                                <td>{{row.0}}</td>
-                                <td>{{row.1}}</td>
-                                <td>{{row.2}}</td>
-                                <td>{{row.3}}</td>
+                                <td>{{hospital.0}}</td>
+                                <td>{{hospital.1}}</td>
+                                <td>{{hospital.2}}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
-
                     </table>
                 </div>
             </div>
@@ -216,7 +218,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-primary" style="align-content: center;">
-                        Add New Hospital</h5>
+                        Add New Claim</h5>
                 </div>
                 <div class="modal-body">
                     <form action="/customer/file_claim" method="POST">
@@ -225,6 +227,12 @@
                             <label style="color:black">Description of Claim</label>
                             <textarea style="height: 100px;" name="description" class="form-control"
                                 placeholder="Enter description of claim" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="color:black">Claim Cost</label>
+                            <input type="text" name="cost" class="form-control" id="exampleFormControlInput1"
+                                placeholder="$" required>
                         </div>
 
                         <div class="form-group">
@@ -238,7 +246,9 @@
 
                         </div>
                         <br>
-                        <!-- <button type="submit" class="btn btn-primary mb-2" style="background:#24424cc4;">Save</button> -->
+
+                        <input type="hidden" name="user" value="{{user}}">
+
                         <div class="form-group">
                             <button type="submit" class="form-control btn btn-primary rounded submit px-3">
                                 Send</button>
