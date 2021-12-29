@@ -118,7 +118,7 @@
                         <div class="form-group">
                             <label style="color:black">Name</label>
                             <input type="text" name="dependent_name" class="form-control" id="exampleFormControlInput1"
-                                placeholder="Enter Full Name" required>
+                                placeholder="Enter Full Name" required maxlength="10">
                         </div>
 
                         <div class="form-group">
@@ -171,7 +171,7 @@
 
     <div id="view_hospital" class="modal fade" role="dialog">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" style='width: 600px;'>
 
                 <div class="modal-header">
                     <h5 class="modal-title text-primary" style="align-content: center;">
@@ -209,7 +209,7 @@
 
 
 
-    <!------------------------------------------------------------------ -->
+    <!----------------------------------------------------------------------->
     <!--------------------- Start File An insurance Claim -------------------->
     <!-------------------------------------------------------------------------->
 
@@ -225,22 +225,22 @@
 
                         <div class="form-group">
                             <label style="color:black">Description of Claim</label>
-                            <textarea style="height: 100px;" name="description" class="form-control"
-                                placeholder="Enter description of claim" required></textarea>
+                            <textarea cols=" 60" rows=' 10' style="height: 100px;" name="description"
+                                class="form-control" placeholder="Enter description of claim" required></textarea>
                         </div>
 
                         <div class="form-group">
                             <label style="color:black">Claim Cost</label>
                             <input type="text" name="cost" class="form-control" id="exampleFormControlInput1"
-                                placeholder="$" required>
+                                placeholder="$" required maxlength="6">
                         </div>
 
                         <div class="form-group">
-                            <label style="color:black">The ID of Plan</label>
+                            <label style="color:black">The Beneficiary</label>
 
-                            <select name='plan_id' id='select-type' class="form-control" required>
-                                {%for plan in plans_list%}
-                                <option>{{plan}}</option>
+                            <select name='beneficiary' id='select-type' class="form-control" required>
+                                {%for dependent in dependents_list%}
+                                <option>{{dependent}}</option>
                                 {%endfor%}
                             </select>
 
@@ -260,9 +260,9 @@
         </div>
     </div>
 
-    <!-------------------------------------------------------------------------->
+    <!---------------------------------------------------------------------------->
     <!--------------------- End File An insurance Claim -------------------------->
-    <!-- ---------------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------------------->
 
 
 
@@ -271,22 +271,37 @@
     <!-- ---------- Start flashed messages -------------------------------------->
     <!-- ------------------------------------------------------------------------>
 
-    <h4 class='message'>
-        <div>
-            {%with messages = get_flashed_messages()%}
+    <div class='message'>
+        <h5>
+            {%with messages = get_flashed_messages(with_categories=true)%}
             {%if messages%}
-            {% for message in messages %}
+            {% for category, message in messages %}
+            {%if category == 'success'%}
+
             <div class="alert alert-success alert-dismissable" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 {{message}}
             </div>
+
+            {%endif%}
+
+            {%if category == 'error'%}
+            <div class="alert alert-danger alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{message}}
+            </div>
+
+            {%endif%}
+
             {%endfor%}
             {%endif%}
             {%endwith%}
-        </div>
-    </h4>
+        </h5>
+    </div>
 
     <!-- ------------------------------------------------------------------------>
     <!-- ----------End lashed messages------------------------------------------->

@@ -98,7 +98,7 @@ def insert_customer():
         plan_id = cr.fetchone()[0]
 
         # Insert Into Dependent Table
-        cr.execute(f"INSERT INTO dependents (name, relationship, plan) VALUES('{user_name}', 'owner', '{plan_id}');")
+        cr.execute(f"INSERT INTO dependents (name, relationship, plan) VALUES('>{user_name}<' , 'owner', '{plan_id}');")
 
         db.commit()
         cr.close()
@@ -181,7 +181,7 @@ def show_all_claims():
 
     cr = db.cursor()
 
-    cr.execute("SELECT claim_ID, state, CONVERT(cost, CHAR) , description, data FROM claims WHERE plan "
+    cr.execute("SELECT claim_ID, beneficiary, CONVERT(cost, CHAR), date_of_claim, state, description FROM claims WHERE plan "
                f"IN (SELECT plan_ID FROM plans WHERE owner='{user}');")
 
     claims_list = cr.fetchall()
@@ -204,7 +204,7 @@ def show_unresolved_claims():
 
     cr = db.cursor()
 
-    cr.execute("SELECT claim_ID, state, CONVERT(cost, CHAR) , description, data FROM claims WHERE plan "
+    cr.execute("SELECT claim_ID, beneficiary, CONVERT(cost, CHAR), date_of_claim, state, description FROM claims WHERE plan "
                f"IN (SELECT plan_ID FROM plans WHERE owner='{user}') and state='unresolved' ;")
 
     claims_list = cr.fetchall()
@@ -263,6 +263,14 @@ def customer():
     available_hospital_list = cr.fetchall()
 
     # user = 'mosta148'
+
+    # Get all Dependants for this customer
+    cr.execute(f"SELECT name FROM dependents WHERE plan in( SELECT plan_ID FROM plans WHERE owner='{user}');")
+    dependents_tuple = cr.fetchall()
+    dependents_list = [depend[0] for depend in dependents_tuple]
+
+
+
     # get name of this customer to print in page
     cr.execute(f"SELECT name FROM customer WHERE user_name='{user}';")
     customer_tuple = cr.fetchall()
@@ -272,7 +280,7 @@ def customer():
 
     return render_template('customer.html',
                            customer_name=customer_name, user=user, plans_list=plans_list,
-                           available_hospital=available_hospital_list)
+                           available_hospital=available_hospital_list, dependents_list=dependents_list)
 
 
 # --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
@@ -312,22 +320,33 @@ def customer_purchase_plan():
 @app.route('/customer/add_dependent', methods=["POST"])
 def add_dependent():
     if request.method == "POST":
-        dependent_name = request.form.get('dependent_name')
+        new_dependent_name = request.form.get('dependent_name')
         relationship = request.form.get('relationship')
         plan_id = request.form.get('plan_id')
 
         user = request.form.get('user')  # this is a hidden input sent with plan type input
 
         cr = db.cursor()
-        cr.execute(
-            f"INSERT INTO dependents (name, relationship, plan)"
-            f" VALUES('{dependent_name}', '{relationship}', '{plan_id}');")
 
-        db.commit()
-        cr.close()
+        # Get all Dependants for this customer
+        cr.execute(f"SELECT name FROM dependents WHERE plan in( SELECT plan_ID FROM plans WHERE owner='{user}');")
+        dependents_tuple = cr.fetchall()
+        dependents_list = [depend[0] for depend in dependents_tuple]
 
-        flash('A new dependent has been added successfully', 'success')
-        return redirect(f'/customer?user={user}')
+        if new_dependent_name in dependents_list:
+            flash('This dependent name already exists', 'error')
+            return redirect(f'/customer?user={user}')
+
+        else:
+            cr.execute(
+                f"INSERT INTO dependents (name, relationship, plan)"
+                f" VALUES('{new_dependent_name}', '{relationship}', '{plan_id}');")
+
+            db.commit()
+            cr.close()
+
+            flash('A new dependent has been added successfully', 'success')
+            return redirect(f'/customer?user={user}')
 
 
 # --------------------------------------------------------------------------------------->>>>>>> DONE <<<<<<<----------
@@ -341,14 +360,23 @@ def add_dependent():
 def file_claim():
     if request.method == "POST":
         description = request.form.get('description')
-        plan_id = request.form.get('plan_id')
+        beneficiary = request.form.get('beneficiary')
         cost = request.form.get('cost')
-        state = 'unresolved'
+
         user = request.form.get('user')  # this is a hidden input sent with plan type input
 
         cr = db.cursor()
-        cr.execute(f"INSERT INTO claims (plan, state, description, cost)"
-                   f" VALUES ('{plan_id}', '{state}', '{description}', '{cost}')")
+
+        # get plan_id of this beneficiary
+        cr.execute(f"SELECT plan_ID FROM plans"
+                   f" WHERE owner='{user}'"
+                   f" AND plan_ID IN ( SELECT plan FROM dependents WHERE name='{beneficiary}');")
+
+        plan_id = cr.fetchall()[0][0]
+
+
+        cr.execute(f"INSERT INTO claims (plan,  description, cost, beneficiary)"
+                   f" VALUES ('{plan_id}', '{description}', '{cost}', '{beneficiary}')")
 
         db.commit()
         cr.close()

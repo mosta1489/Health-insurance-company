@@ -59,8 +59,10 @@
                     <thead>
                         <tr>
                             <th scope="col">Claim ID</th>
-                            <th scope="col">State</th>
+                            <th scope="col">Beneficiary</th>
                             <th scope="col">Cost</th>
+                            <th scope="col" style="text-align: center;">Date</th>
+                            <th scope="col">State</th>
                             <th scope="col">Discription</th>
                             <th scope="col">Make It Resolved</th>
                         </tr>
@@ -71,11 +73,16 @@
                             <td>{{claim.0}}</td>
                             <td>{{claim.1}}</td>
                             <td>{{claim.2}}</td>
+                            <td>{{claim.3}}</td>
+                            <td>{{claim.4}}</td>
+
                             <td>
                                 <a href="" class="btn btn-warning btn-sm" data-toggle="modal"
                                     data-target="#description">
                                     View Description</a>
                             </td>
+
+                            {%set Description='Mark this claim as resolved ?'%}
                             <td>
                                 <a href="/make_claim_resolved?user={{user}}&claim_id={{claim.0}}"
                                     onclick="return confirm('{{Description}}')" class="btn btn-danger btn-sm">
@@ -83,48 +90,49 @@
                             </td>
                         </tr>
 
-                        <!-- Enter New Student Modal -->
+                        <!-- ------------------------------------------------ -->
+                        <!------------------- Start View Description ------------>
+                        <!-- ------------------------------------------------ -->
+
                         <div id="description" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-
                                     <div class="modal-header">
                                         <h5 class="modal-title text-primary" style="align-content: center;">
                                             Description of Claim</h5>
                                     </div>
-
                                     <div class="modal-body">
-
-                                        <div class="form-group">
-                                            <h3>{{claim.3}}</h3>
+                                        <div>
+                                            <textarea readonly class="form-control" id="exampleFormControlInput1"
+                                                cols=" 60" rows='10'
+                                                style="resize: none; color:black">{{claim.5}}</textarea>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
-
-                        <!-- End of Edit Student Modal -->
-
+                        <!-- ------------------------------------------------ -->
+                        <!------------------- End View Description ------------->
+                        <!-- ------------------------------------------------ -->
 
                         {% endfor %}
                     </tbody>
 
                 </table>
-            </div>
-            <!--------------- End show Customer list --------------->
 
+                <!-- -------------------------------------------------->
+                <!------------------- End View ALL Climes ------------->
+                <!-- -------------------------------------------------->
+                <!-- -------------------------------------------------->
+
+
+            </div>
         </div>
     </div>
 
 
-    <!-- ------------------------------------------------ -->
 
-    <!-- ------------------------------------------------ -->
-    <!------------------- Enter View ALL Climes ------------>
-    <!-- ------------------------------------------------ -->
 
 
     <!---------------------------------------------------->
