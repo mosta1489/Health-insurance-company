@@ -181,8 +181,9 @@ def show_all_claims():
 
     cr = db.cursor()
 
-    cr.execute("SELECT claim_ID, beneficiary, CONVERT(cost, CHAR), date_of_claim, state, description FROM claims WHERE plan "
-               f"IN (SELECT plan_ID FROM plans WHERE owner='{user}');")
+    cr.execute(
+        "SELECT claim_ID, beneficiary, CONVERT(cost, CHAR), date_of_claim, state, description FROM claims WHERE plan "
+        f"IN (SELECT plan_ID FROM plans WHERE owner='{user}');")
 
     claims_list = cr.fetchall()
 
@@ -203,9 +204,9 @@ def show_unresolved_claims():
     user = request.args.get('user')
 
     cr = db.cursor()
-
-    cr.execute("SELECT claim_ID, beneficiary, CONVERT(cost, CHAR), date_of_claim, state, description FROM claims WHERE plan "
-               f"IN (SELECT plan_ID FROM plans WHERE owner='{user}') and state='unresolved' ;")
+    cr.execute(
+        "SELECT claim_ID, beneficiary, CONVERT(cost, CHAR), date_of_claim, state, description  FROM claims WHERE plan "
+        f"IN (SELECT plan_ID FROM plans WHERE owner='{user}') and state='unresolved' ;")
 
     claims_list = cr.fetchall()
 
@@ -232,7 +233,6 @@ def make_claim_resolved():
 
     db.commit()
     cr.close()
-
 
     flash("Status of Claims Has Been Edited Successfully", 'success')
     return redirect(f"/admin/show_all_claims?user={user}")
@@ -268,8 +268,6 @@ def customer():
     cr.execute(f"SELECT name FROM dependents WHERE plan in( SELECT plan_ID FROM plans WHERE owner='{user}');")
     dependents_tuple = cr.fetchall()
     dependents_list = [depend[0] for depend in dependents_tuple]
-
-
 
     # get name of this customer to print in page
     cr.execute(f"SELECT name FROM customer WHERE user_name='{user}';")
@@ -359,10 +357,17 @@ def add_dependent():
 @app.route('/customer/file_claim', methods=["POST"])
 def file_claim():
     if request.method == "POST":
-        description = request.form.get('description')
-        beneficiary = request.form.get('beneficiary')
+
+        user = request.form.get('user')  # this is a hidden input sent with plan type input
         cost = request.form.get('cost')
 
+        for i in cost:
+            if i.islower() or i.isupper():
+                flash('Invalid data entry ', 'error')
+                return redirect(f'/customer?user={user}')
+
+        description = request.form.get('description')
+        beneficiary = request.form.get('beneficiary')
         user = request.form.get('user')  # this is a hidden input sent with plan type input
 
         cr = db.cursor()
@@ -373,7 +378,6 @@ def file_claim():
                    f" AND plan_ID IN ( SELECT plan FROM dependents WHERE name='{beneficiary}');")
 
         plan_id = cr.fetchall()[0][0]
-
 
         cr.execute(f"INSERT INTO claims (plan,  description, cost, beneficiary)"
                    f" VALUES ('{plan_id}', '{description}', '{cost}', '{beneficiary}')")

@@ -28,7 +28,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">User Name</th>
+                            <th scope="col" style="text-align: left;">User Name</th>
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">View Claims</th>
@@ -37,7 +37,7 @@
                     <tbody>
                         {% for customer in customers_list %}
                         <tr>
-                            <td>{{customer.0}}</td>
+                            <td style="text-align: left;">{{customer.0}}</td>
                             <td>{{customer.1}}</td>
                             <td>{{customer.2}}</td>
                             <td>
@@ -56,6 +56,12 @@
 
                 </table>
             </div>
+
+            <style>
+                tr {
+                    text-align: center;
+                }
+            </style>
 
             <!------------------------------------------------------>
             <!--------------- End show Customer list --------------->
