@@ -45,15 +45,24 @@ def login():
         else:
 
             cr = db.cursor()
-            cr.execute(f'SELECT password FROM customer WHERE user_name="{user}";')
 
-            test_pass = cr.fetchone()
+            user = 'rezq'
+            cr.execute(f'SELECT user_name FROM customer WHERE user_name="{user}";')
 
-            if password == test_pass[0]:
-                return redirect(f'/customer?user={user}')
+            user_name = cr.fetchall()
+            if not user_name:
+                flash('username Is not exists', 'error')
 
             else:
-                flash('Incorrect username or password.. Try again', 'error')
+                cr.execute(f'SELECT password FROM customer WHERE user_name="{user}";')
+
+                test_pass = cr.fetchone()
+
+                if password == test_pass[0]:
+                    return redirect(f'/customer?user={user}')
+
+                else:
+                    flash('Incorrect username or password.. Try again', 'error')
 
             # return render_template('customer.html', user_name=user)
 
