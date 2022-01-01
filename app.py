@@ -46,7 +46,6 @@ def login():
 
             cr = db.cursor()
 
-            user = 'rezq'
             cr.execute(f'SELECT user_name FROM customer WHERE user_name="{user}";')
 
             user_name = cr.fetchall()
