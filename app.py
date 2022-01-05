@@ -97,13 +97,21 @@ def insert_customer():
         # Insert Into customer table
         cr.execute(f"INSERT INTO customer(user_name,name ,phone, password)"
                    f" VALUES('{user_name}', '{customer_name}', '{phone}', '{password}' );")
-
-        # Insert Into Plan Table
+        #
+        #         # Insert Into Plan Table
         cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user_name}');")
 
         # get id of this new plan
         cr.execute(f"SELECT plan_ID FROM plans WHERE owner='{user_name}'")
         plan_id = cr.fetchone()[0]
+
+        # get hospitals that support this plan
+        cr.execute(f"SELECT hospital FROM covers WHERE plan_type='{plan_type}'")
+        hospital_list = [hospital[0] for hospital in cr.fetchall()]
+
+        # insert into support tabl
+        for hospital in hospital_list:
+            cr.execute(f"INSERT INTO support(plan_id, hospital) VALUES('{plan_id}', '{hospital}');")
 
         # Insert Into Dependent Table
         cr.execute(f"INSERT INTO dependents (name, relationship, plan) VALUES('>{user_name}<' , 'owner', '{plan_id}');")
@@ -307,7 +315,18 @@ def customer_purchase_plan():
 
         # Insert Into Plan Table
         cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user}');")
-        # cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user}');")
+        db.commit()
+
+        # get ID of this new plan
+        cr.execute(f"SELECT plan_ID FROM plans WHERE owner='{user}'")
+        plan_id = max(cr.fetchall())[0]
+
+
+        cr.execute(f"SELECT hospital FROM covers WHERE plan_type='{plan_type}'")
+        hospital_list = [hospital[0] for hospital in cr.fetchall()]
+
+        for hospital in hospital_list:
+            cr.execute(f"INSERT INTO support(plan_id, hospital) VALUES('{plan_id}', '{hospital}');")
 
         db.commit()
         cr.close()
