@@ -105,14 +105,6 @@ def insert_customer():
         cr.execute(f"SELECT plan_ID FROM plans WHERE owner='{user_name}'")
         plan_id = cr.fetchone()[0]
 
-        # get hospitals that support this plan
-        cr.execute(f"SELECT hospital FROM covers WHERE plan_type='{plan_type}'")
-        hospital_list = [hospital[0] for hospital in cr.fetchall()]
-
-        # insert into support tabl
-        for hospital in hospital_list:
-            cr.execute(f"INSERT INTO support(plan_id, hospital) VALUES('{plan_id}', '{hospital}');")
-
         # Insert Into Dependent Table
         cr.execute(f"INSERT INTO dependents (name, relationship, plan) VALUES('>{user_name}<' , 'owner', '{plan_id}');")
 
@@ -315,18 +307,6 @@ def customer_purchase_plan():
 
         # Insert Into Plan Table
         cr.execute(f"INSERT INTO plans(type, owner) VALUES('{plan_type}', '{user}');")
-        db.commit()
-
-        # get ID of this new plan
-        cr.execute(f"SELECT plan_ID FROM plans WHERE owner='{user}'")
-        plan_id = max(cr.fetchall())[0]
-
-
-        cr.execute(f"SELECT hospital FROM covers WHERE plan_type='{plan_type}'")
-        hospital_list = [hospital[0] for hospital in cr.fetchall()]
-
-        for hospital in hospital_list:
-            cr.execute(f"INSERT INTO support(plan_id, hospital) VALUES('{plan_id}', '{hospital}');")
 
         db.commit()
         cr.close()
@@ -392,6 +372,15 @@ def file_claim():
             if i.islower() or i.isupper():
                 flash('Invalid data entry ', 'error')
                 return redirect(f'/customer?user={user}')
+
+        str_cost = str(cost)
+        if len(str_cost) > 4:
+            if ('.' in str_cost) and not (str_cost.index('.') > 4):
+                pass
+            else:
+                flash('The cost value is rejected', 'error')
+                return redirect(f'/customer?user={user}')
+
 
         description = request.form.get('description')
         beneficiary = request.form.get('beneficiary')
