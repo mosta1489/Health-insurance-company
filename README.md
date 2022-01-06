@@ -1,2 +1,6 @@
 # Health-insurance-company
-small web application for Health-insurance-company
+
+to show admin page 
+use 
+username = admin
+password = admin
