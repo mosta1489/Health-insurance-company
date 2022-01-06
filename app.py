@@ -131,6 +131,10 @@ def insert_hospital():
         phone = request.form.get('phone')
         plan_type_list = request.form.getlist('plan_type')
 
+        if not plan_type_list:
+            flash('Pleas choose type of plan', 'error')
+            return redirect('/')
+
         cr = db.cursor()
 
         # check if new hospital is already exist or not
